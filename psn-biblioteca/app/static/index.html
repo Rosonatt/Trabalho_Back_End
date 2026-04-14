@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Minha Biblioteca PlayStation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #003087 0%, #0070d1 50%, #003087 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        /* Efeito de luz do PlayStation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #0070d1, #2ea9ff, #0070d1);
+            animation: psGlow 3s infinite;
+            z-index: 1000;
+        }
+
+        @keyframes psGlow {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            color: #003087;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h1 img {
+            height: 40px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        /* Cards de estatísticas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #003087, #0070d1);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '●';
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            font-size: 80px;
+            opacity: 0.1;
+            transform: rotate(45deg);
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        /* Formulário estilo PlayStation */
+        .form-container {
+            background: #f5f5f5;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 4px solid #0070d1;
+        }
+
+        .form-title {
+            color: #003087;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #003087;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #0070d1;
+            box-shadow: 0 0 0 3px rgba(0, 112, 209, 0.1);
+        }
+
+        /* Botões */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #003087, #0070d1);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 112, 209, 0.3);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        /* Tabela */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background: linear-gradient(135deg, #003087, #0070d1);
+            color: white;
+            padding: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Badges estilo PlayStation */
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .badge.ps5 {
+            background: #0070d1;
+            color: white;
+        }
+
+        .badge.ps4 {
+            background: #003087;
+            color: white;
+        }
+
+        .badge.fisica {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge.digital {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .badge.platinado {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+        }
+
+        .badge.completo {
+            background: #48bb78;
+            color: white;
+        }
+
+        .badge.jogando {
+            background: #0070d1;
+            color: white;
+        }
+
+        .filtros {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn-filter {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #0070d1;
+            color: #0070d1;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-filter:hover, .btn-filter.active {
+            background: #0070d1;
+            color: white;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: none;
+            animation: slideIn 0.3s;
+            z-index: 1000;
+            border-left: 4px solid #0070d1;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #999;
+            font-size: 1.2em;
+        }
+
+        .valor-gasto {
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="toast" id="toast"></div>
+    
+    <div class="container">
+        <h1>
+            🎮 Minha Biblioteca PlayStation
+            <span style="font-size: 0.5em; margin-left: auto; opacity: 0.7;">PS4 · PS5</span>
+        </h1>
+        <p class="subtitle">CRUD para o trabalho de Back-end = Meus jogos do PlayStation </p>
+        
+       
+        <div class="stats-grid" id="statsContainer">
+           
+        </div>
+        
+     
+        <div class="form-container">
+            <h3 class="form-title">
+                <span>➕</span> Adicionar Jogo à Biblioteca
+            </h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Nome do Jogo</label>
+                    <input type="text" id="nome" placeholder="Ex: God of War Ragnarök" autocomplete="off">
+                </div>
+                
+                <div class="form-group">
+                    <label>Plataforma</label>
+                    <select id="plataforma">
+                        <option value="PS5">PS5</option>
+                        <option value="PS4">PS4</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Tipo de Mídia</label>
+                    <select id="tipo_midia">
+                        <option value="💿 Física">💿 Física</option>
+                        <option value="🎮 Digital">🎮 Digital</option>
+                        <option value="⭐ PS Plus">⭐ PS Plus</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Valor Pago (R$)</label>
+                    <input type="number" id="valor_pago" placeholder="249.90" min="0" step="0.01" value="0">
+                </div>
+                
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="status">
+                        <option value="📦 Não iniciado">📦 Não iniciado</option>
+                        <option value="🎯 Jogando">🎯 Jogando</option>
+                        <option value="🏆 Completo">🏆 Completo</option>
+                        <option value="✨ Platinado">✨ Platinado</option>
+                        <option value="😴 Abandonado">😴 Abandonado</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Horas Jogadas</label>
+                    <input type="number" id="horas_jogadas" placeholder="0" min="0" step="0.5" value="0">
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="BibliotecaApp.adicionarJogo()" style="margin-top: 20px;">
+                💾 Adicionar à Biblioteca
+            </button>
+        </div>
+        
+        <!-- Filtros -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="color: #003087;">📚 Jogos na Biblioteca</h3>
+            <div class="filtros">
+                <button class="btn-filter active" onclick="BibliotecaApp.filtrar('todos')">Todos</button>
+                <button class="btn-filter" onclick="BibliotecaApp.filtrar('PS5')">PS5</button>
+                <button class="btn-filter" onclick="BibliotecaApp.filtrar('PS4')">PS4</button>
+                <button class="btn-filter" onclick="BibliotecaApp.filtrar('Física')">💿 Física</button>
+                <button class="btn-filter" onclick="BibliotecaApp.filtrar('Digital')">🎮 Digital</button>
+            </div>
+        </div>
+        
+        <!-- Tabela de jogos -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jogo</th>
+                        <th>Plataforma</th>
+                        <th>Mídia</th>
+                        <th>Valor</th>
+                        <th>Status</th>
+                        <th>Horas</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaJogos">
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px;">
+                            🎮 Carregando sua biblioteca...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const BibliotecaApp = {
+            apiUrl: window.location.origin,
+            jogos: [],
+            filtroAtual: 'todos',
+            
+            async carregarJogos() {
+                try {
+                    const response = await fetch(`${this.apiUrl}/jogos/`);
+                    this.jogos = await response.json();
+                    await this.carregarEstatisticas();
+                    this.renderizarTabela();
+                } catch (error) {
+                    document.getElementById('tabelaJogos').innerHTML = 
+                        '<tr><td colspan="7" style="text-align: center; padding: 40px; color: red;">❌ Erro ao carregar os jogos</td></tr>';
+                }
+            },
+            
+            async carregarEstatisticas() {
+                try {
+                    const response = await fetch(`${this.apiUrl}/estatisticas`);
+                    const stats = await response.json();
+                    
+                    const container = document.getElementById('statsContainer');
+                    
+                    if (stats.total_jogos) {
+                        container.innerHTML = `
+                            <div class="stat-card">
+                                <div class="stat-label">Total de Jogos</div>
+                                <div class="stat-value">${stats.total_jogos}</div>
+                                <small>${stats.por_plataforma.PS5 || 0} PS5 · ${stats.por_plataforma.PS4 || 0} PS4</small>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Total Gasto</div>
+                                <div class="stat-value">R$ ${stats.total_gasto.toFixed(2)}</div>
+                                <small>Média: R$ ${stats.valor_medio.toFixed(2)}/jogo</small>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Horas Jogadas</div>
+                                <div class="stat-value">${stats.total_horas}h</div>
+                                <small>Custo/hora: R$ ${stats.custo_por_hora.toFixed(2)}</small>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Jogos Completos</div>
+                                <div class="stat-value">${stats.completos}/${stats.total_jogos}</div>
+                                <small>${stats.percentual_completo}% completado</small>
+                            </div>
+                        `;
+                    }
+                } catch (error) {
+                    console.error('Erro nas estatísticas:', error);
+                }
+            },
+            
+            renderizarTabela() {
+                const tbody = document.getElementById('tabelaJogos');
+                
+                let jogosFiltrados = this.jogos;
+                
+                // Aplica filtro
+                if (this.filtroAtual !== 'todos') {
+                    if (this.filtroAtual === 'Física' || this.filtroAtual === 'Digital') {
+                        jogosFiltrados = this.jogos.filter(j => j.tipo_midia.includes(this.filtroAtual));
+                    } else {
+                        jogosFiltrados = this.jogos.filter(j => j.plataforma === this.filtroAtual);
+                    }
+                }
+                
+                if (jogosFiltrados.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                🎮 Nenhum jogo na biblioteca ainda.<br>
+                                Bora comprar uns jogos?
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+               
+                jogosFiltrados.sort((a, b) => a.nome.localeCompare(b.nome));
+                
+                tbody.innerHTML = '';
+                
+                jogosFiltrados.forEach(jogo => {
+                    const tr = document.createElement('tr');
+                    
+                    
+                    const plataformaClass = jogo.plataforma === 'PS5' ? 'ps5' : 'ps4';
+                    const midiaClass = jogo.tipo_midia.includes('Física') ? 'fisica' : 'digital';
+                    
+                    let statusClass = '';
+                    if (jogo.status.includes('Platinado')) statusClass = 'platinado';
+                    else if (jogo.status.includes('Completo')) statusClass = 'completo';
+                    else if (jogo.status.includes('Jogando')) statusClass = 'jogando';
+                    
+                    tr.innerHTML = `
+                        <td><strong>${this.escapeHtml(jogo.nome)}</strong></td>
+                        <td><span class="badge ${plataformaClass}">${jogo.plataforma}</span></td>
+                        <td><span class="badge ${midiaClass}">${jogo.tipo_midia}</span></td>
+                        <td class="valor-gasto">R$ ${jogo.valor_pago.toFixed(2)}</td>
+                        <td><span class="badge ${statusClass}">${jogo.status}</span></td>
+                        <td>${jogo.horas_jogadas || 0}h</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="BibliotecaApp.removerJogo('${jogo._id}', '${jogo.nome}')">
+                                🗑️ Remover
+                            </button>
+                        </td>
+                    `;
+                    
+                    tbody.appendChild(tr);
+                });
+                
+                
+                document.querySelectorAll('.btn-filter').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.textContent.includes(this.filtroAtual) || 
+                        (this.filtroAtual === 'todos' && btn.textContent === 'Todos')) {
+                        btn.classList.add('active');
+                    }
+                });
+            },
+            
+            async adicionarJogo() {
+                const nome = document.getElementById('nome').value.trim();
+                const plataforma = document.getElementById('plataforma').value;
+                const tipo_midia = document.getElementById('tipo_midia').value;
+                const valor_pago = parseFloat(document.getElementById('valor_pago').value) || 0;
+                const status = document.getElementById('status').value;
+                const horas_jogadas = parseFloat(document.getElementById('horas_jogadas').value) || 0;
+                
+                if (!nome) {
+                    this.mostrarToast('❌ Dá um nome pro jogo aí!');
+                    return;
+                }
+                
+                const novoJogo = {
+                    nome, plataforma, tipo_midia, valor_pago, status, horas_jogadas
+                };
+                
+                try {
+                    const response = await fetch(`${this.apiUrl}/jogos/`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(novoJogo)
+                    });
+                    
+                    if (!response.ok) throw new Error('Erro ao adicionar');
+                    
+                    this.mostrarToast(`✅ ${nome} adicionado à biblioteca!`);
+                    
+                    // Limpa formulário
+                    document.getElementById('nome').value = '';
+                    document.getElementById('valor_pago').value = '0';
+                    document.getElementById('horas_jogadas').value = '0';
+                    
+                    await this.carregarJogos();
+                    
+                } catch (error) {
+                    this.mostrarToast('❌ Erro ao adicionar jogo');
+                }
+            },
+            
+            async removerJogo(id, nome) {
+                if (!confirm(`Remover "${nome}" da biblioteca?`)) return;
+                
+                try {
+                    await fetch(`${this.apiUrl}/jogos/${id}`, { method: 'DELETE' });
+                    this.mostrarToast(`🗑️ ${nome} removido`);
+                    await this.carregarJogos();
+                } catch (error) {
+                    this.mostrarToast('❌ Erro ao remover');
+                }
+            },
+            
+            filtrar(tipo) {
+                this.filtroAtual = tipo;
+                this.renderizarTabela();
+            },
+            
+            mostrarToast(mensagem) {
+                const toast = document.getElementById('toast');
+                toast.textContent = mensagem;
+                toast.style.display = 'block';
+                setTimeout(() => toast.style.display = 'none', 3000);
+            },
+            
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        };
+        
+       
+        document.addEventListener('DOMContentLoaded', () => {
+            BibliotecaApp.carregarJogos();
+        });
+        
+    
+        function adicionarJogo() { BibliotecaApp.adicionarJogo(); }
+        function removerJogo(id, nome) { BibliotecaApp.removerJogo(id, nome); }
+        function filtrar(tipo) { BibliotecaApp.filtrar(tipo); }
+    </script>
+</body>
+</html>

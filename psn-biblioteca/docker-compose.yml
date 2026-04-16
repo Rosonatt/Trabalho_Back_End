@@ -1,4 +1,4 @@
-# Docker Compose para API FastAPI + MongoDB
+# Docker Compose para API FastAPI + MongoDB (PSN Library)
 
 services:
   mongodb:
@@ -8,7 +8,8 @@ services:
     volumes:
       - mongo_data:/data/db
     ports:
-      - "27017:27017"
+     
+      - "27018:27017"
     environment:
       - MONGO_INITDB_DATABASE=psn_biblioteca
     healthcheck:
@@ -27,12 +28,13 @@ services:
     ports:
       - "8000:8000"
     environment:
+     
       - MONGO_URL=mongodb://mongodb:27017
     depends_on:
       mongodb:
         condition: service_healthy
     volumes:
-      - ./app:/app/app
+      - .:/app  
     networks:
       - psn_network
     healthcheck:

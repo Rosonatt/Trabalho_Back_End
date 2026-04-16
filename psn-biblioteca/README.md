@@ -1,25 +1,22 @@
-# 🎮 Biblioteca PlayStation - CRUD FastAPI + MongoDB
+# PlayStation Library Manager | Backend API
 
-## ✅ Requisitos Atendidos
+Este projeto consiste em uma API RESTful para gerenciamento de bibliotecas de jogos PlayStation, desenvolvida como parte da avaliação de Backend do curso de **Engenharia de Software na Univassouras**. A aplicação utiliza uma arquitetura baseada em containers, garantindo portabilidade e isolamento do ambiente de banco de dados.
 
-- **Backend CRUD**: Todas as operações implementadas (Create, Read, Update, Delete)
-- **FastAPI**: Framework utilizado para construir a API REST
-- **MongoDB**: Banco de dados NoSQL para persistência
-- **Docker**: Aplicação e banco rodando em containers separados
-- **4 Atributos**: nome, plataforma, tipo_midia, valor_pago
-- **Tema**: Biblioteca de jogos PlayStation (NÃO é usuários nem produtos)
+## 🛠️ Stack Tecnológica
 
-## 📦 Estrutura
+* **Linguagem:** Python 
+* **Framework:** FastAPI (Alta performance e suporte nativo a operações assíncronas)
+* **Banco de Dados:** MongoDB (NoSQL baseado em documentos)
+* **Containerização:** Docker & Docker Compose
+* **Validação de Dados:** Pydantic
 
-\`\`\`
-app/
-├── models/jogo.py       # Schema com 4 atributos principais
-├── database/mongodb.py  # Conexão com MongoDB
-├── main.py              # Rotas CRUD completas
-└── static/index.html    # Interface web
+## 📌 Funcionalidades (CRUD)
 
-Dockerfile               # Container da API
-docker-compose.yml       # Orquestra API + MongoDB
+A API permite a manipulação completa do acervo de jogos com os seguintes atributos:
+* `nome`: Título do jogo.
+* `plataforma`: Console (PS4, PS5, etc.).
+* `tipo_midia`: Físico ou Digital.
+* `valor_pago`: Custo de aquisição.
 \`\`\`
 
 ## 🚀 Como executar
